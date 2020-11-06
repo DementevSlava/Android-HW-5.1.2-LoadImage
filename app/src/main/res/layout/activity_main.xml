@@ -1,13 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
+    <ImageView
+        android:id="@+id/imageView"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+    <RelativeLayout
+        android:id="@+id/layoutRelative"
+        android:layout_width="match_parent"
+        android:layout_height="461dp"
         android:orientation="vertical"
         android:padding="16dp">
+
 
         <LinearLayout
             android:id="@+id/result"
@@ -211,12 +221,12 @@
 
     </RelativeLayout>
 
-    <include layout="@layout/settings"/>
+    <include layout="@layout/settings" />
+
     <Button
         android:id="@+id/setting"
-        android:text="@string/settings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal|bottom"
-        />
+        android:text="@string/settings" />
 </FrameLayout>

@@ -1,12 +1,22 @@
 package com.dementev.loadimage;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
+import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -15,6 +25,14 @@ public class MainActivity extends AppCompatActivity {
     TextView resultField;
     EditText numberField;
     TextView operationField;
+    EditText imageName;
+    View layoutRelative;
+    View layoutSettings;
+    String fileName;
+
+    public static final int REQUEST_CODE_PERMISSION_READ_STORAGE = 10;
+    public static final int REQUEST_CODE_PERMISSION_WRITE_STORAGE = 11;
+
 
 
     @Override
@@ -22,15 +40,29 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        int permissionStatus = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
+
+        if (permissionStatus != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    REQUEST_CODE_PERMISSION_READ_STORAGE);
+        }
 
         init();
+
+
     }
 
     private void init() {
         resultField = findViewById(R.id.resultField);
         numberField = findViewById(R.id.numberField);
         operationField = findViewById(R.id.operationField);
+        imageName = findViewById(R.id.editFileName);
+        layoutRelative = findViewById(R.id.layoutRelative);
+        layoutSettings = findViewById(R.id.layoutSettings);
 
+        Button settings = findViewById(R.id.setting);
+        Button loadBtn = findViewById(R.id.loadButton);
 
         final Button oneBtn = findViewById(R.id.oneBtn);
         final Button twoBtn = findViewById(R.id.twoBtn);
@@ -116,7 +148,21 @@ public class MainActivity extends AppCompatActivity {
 
         equalBtn.setOnClickListener(v -> operationClick(v));
 
+        settings.setOnClickListener(v -> {
+            layoutRelative.setVisibility(View.INVISIBLE);
+            layoutSettings.setVisibility(View.VISIBLE);
+        });
+
+        loadBtn.setOnClickListener(v -> {
+            fileName = imageName.getText().toString();
+            layoutRelative.setVisibility(View.VISIBLE);
+            layoutSettings.setVisibility(View.INVISIBLE);
+            loadImage(fileName);
+        });
+
     }
+
+
 
     public void operationClick(View view) {
         Button button = (Button) view;
@@ -182,6 +228,23 @@ public class MainActivity extends AppCompatActivity {
         if (lastOperation.equals("=") && operand != null) {
             operand = null;
         }
+    }
+
+    private void loadImage(String fileName){
+
+        if (isExternalStorageWritable()){
+            File pic = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fileName);
+            Bitmap bitmap = BitmapFactory.decodeFile(pic.getAbsolutePath());
+            ImageView im = findViewById(R.id.imageView);
+            im.setImageBitmap(bitmap);
+        }
+
+    }
+
+    /* Checks if external storage is available for read and write */
+    public boolean isExternalStorageWritable() {
+        String state = Environment.getExternalStorageState();
+        return Environment.MEDIA_MOUNTED.equals(state) || Environment.MEDIA_MOUNTED_READ_ONLY.equals(state);
     }
 
     @Override

@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/settings"
+    android:id="@+id/layoutSettings"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:visibility="invisible"
@@ -25,7 +25,7 @@
         />
 
     <EditText
-        android:id="@+id/editTextFileName"
+        android:id="@+id/editFileName"
         android:layout_width="120dp"
         android:layout_height="40dp"
         android:layout_marginStart="4dp"
@@ -45,7 +45,7 @@
         android:layout_height="40dp"
         tools:ignore="HardcodedText"
         android:text="load"
-        app:layout_constraintStart_toEndOf="@+id/editTextFileName"
-        app:layout_constraintTop_toTopOf="@id/editTextFileName" />
+        app:layout_constraintStart_toEndOf="@+id/editFileName"
+        app:layout_constraintTop_toTopOf="@id/editFileName" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
